@@ -13,5 +13,14 @@ def topics(request):
     return render(request, 'learning_logs/topics.html', context)        #Y 
 
 
-    
+def topic(request, topic_id):
+    """Mostra um único assunto e todas as suas entradas."""
+    topic = Topic.objects.get(id=topic_id)
+    entries = topic.entry_set.order_by('-date_added') # O sinal "-" antes de date ordena os resultados em ordem inversa
+    context = {'topic': topic, 'entries': entries}
+    return render(request, 'learning_logs/topic.html', context)
+
+
+
+
 
