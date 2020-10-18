@@ -2,7 +2,7 @@
 
 from django.conf.urls import url
 
-from . import views
+from .import views
 
 urlpatterns = [ 
         # Página inicial
@@ -20,6 +20,7 @@ urlpatterns = [
         # Página para adicionar uma nova entrada
         url(r'^new_entry/(?P<topic_id>\d+)/$', views.new_entry,name='new_entry'),
 
-
+        # Página para editar uma entrada        
+        url(r'^edit_entry/(?P<entry_id>\d+)/$', views.edit_entry, name='edit_entry'),
         
 ]
