@@ -1,5 +1,12 @@
 <p>
 <a href="{% url 'learning_logs:index' %}">Learning Log</a> -
+<a href="{% url 'learning_logs:topics' %}">Tópicos</a> -
+{% if user.isauthenticade %}
+  Olá, {{ user.username }}.
+{% else %}
+  <a href="{% url 'users:login' %}">log in</a>
+{% endif %}
+  
 <a href="{% url 'learning_logs:topics' %}">Tópicos</a>
 </p>
 {% block content %} {% endblock content %}
