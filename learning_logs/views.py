@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
 from .forms import TopicForm, EntryForm
 
 from .models import Topic, Entry
@@ -10,13 +11,15 @@ def index(request):
     """A página inicial de Learning Log"""
     return render(request, 'learning_logs/index.html')
 
+@login_required
 def topics(request):
     """Mostra todos os assuntos."""
-    topics = Topic.objects.order_by('date_added')                       #w
+    # topics = Topic.objects.order_by('date_added')    
+    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
     context = {'topics': topics}                                        #X
     return render(request, 'learning_logs/topics.html', context)        #Y 
 
-
+@login_required
 def topic(request, topic_id):
     """Mostra um único assunto e todas as suas entradas."""
     topic = Topic.objects.get(id=topic_id)
@@ -24,6 +27,7 @@ def topic(request, topic_id):
     context = {'topic': topic, 'entries': entries}
     return render(request, 'learning_logs/topic.html', context)
 
+@login_required
 def new_topic(request):
     """Adiciona um novo assunto."""
     if request.method != 'POST':
@@ -39,6 +43,7 @@ def new_topic(request):
     return render(request, 'learning_logs/new_topic.html', context)
     
 
+@login_required
 def new_entry(request, topic_id):
     """Acrescenta uma nova entrada para um assunto em particular."""
     topic = Topic.objects.get(id=topic_id)
@@ -56,6 +61,7 @@ def new_entry(request, topic_id):
     context = {'topic': topic, 'form': form}        
     return render(request, 'learning_logs/new_entry.html', context)
 
+@login_required
 def edit_entry(request, entry_id):
     """Edita uma entrada já existente."""
     entry = Entry.objects.get(id=entry_id)
